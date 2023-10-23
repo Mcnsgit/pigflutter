@@ -13,7 +13,13 @@ class User {
       required this.distance,
       required this.age});
 }
+class UserProfilePic {
+  final String profileImageUrl;
+  final String name;
+  final String email;
 
+  UserProfilePic({required this.profileImageUrl, required this.name, required this.email});
+}
 class Filters {
   double age;
   double weight;

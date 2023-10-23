@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class FilterDrawer extends StatefulWidget {
   final Function onApplyFilters;
 
-  const FilterDrawer({required this.onApplyFilters, Key? key})
-      : super(key: key);
+  const FilterDrawer({required this.onApplyFilters, super.key});
 
   @override
   State<FilterDrawer> createState() => _FilterDrawerState();

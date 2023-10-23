@@ -4,7 +4,7 @@ import '/widgets/user_service.dart';
 class ProfilePage extends StatelessWidget {
   final User user;
 
-  const ProfilePage({required this.user, Key? key}) : super(key: key);
+  const ProfilePage({required this.user, super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -8,12 +8,12 @@ class UserPage extends StatefulWidget {
   final String userBio;
 
   const UserPage({
-    Key? key,
+    super.key,
     this.userName = 'John Doe',
     this.userAge = 28,
     this.userLocation = 'New York',
     this.userBio = 'I love hiking and exploring new places!',
-  }) : super(key: key);
+  });
 
   @override
   // ignore: library_private_types_in_public_api
