@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 
 class User {
@@ -50,7 +52,9 @@ class Filters {
   });
 }
 
-class UserService extends ChangeNotifier {
+class UserService extends ChangeNotifier 
+{final databaseReference = FirebaseDatabase.instance.ref();
+
   final List<Filters> users;
 
   UserService(this.users);
@@ -110,6 +114,18 @@ class UserService extends ChangeNotifier {
 
   void fetchOnlineUsers() {
     // Implementation of fetchOnlineUsers method
+  }
+    void addUser(User user) {
+    databaseReference.child("users").push().set({
+      'name': user.name,
+      'imageUrl': user.imageUrl,
+      'distance': user.distance,
+      'age': user.age,
+    }).catchError((error) {
+      if (kDebugMode) {
+        print('Error occurred while adding user: $error');
+      }
+    });
   }
 }
 // The above code is a Flutter implementation of a user filtering system.  

@@ -1,0 +1,39 @@
+
+flavors:      
+    
+    prod:
+      app:
+        name: "flutter_application_1 prod"
+
+      android:
+        applicationId: "com.example.flutter.application.1.prod"
+        #firebase:
+        #  config: ".firebase/prod/google-services.json"
+
+      ios:
+        bundleId: "com.example.flutter.application.1.prod"
+        firebase:
+          config: ".firebase/prod/GoogleService-Info.plist"
+        buildSettings:
+        # Development Team is visible in the apple developer portal 
+        # DEVELOPMENT_TEAM: YOURDEVTEAMID 
+        # PROVISIONING_PROFILE_SPECIFIER: "Dev-ProvisioningProfile"
+        
+    dev:
+      app:
+        name: "flutter_application_1 dev"
+
+      android:
+        applicationId: "com.example.flutter.application.1.dev"
+        #firebase:
+        #  config: ".firebase/dev/google-services.json"
+
+      ios:
+        bundleId: "com.example.flutter.application.1.dev"
+        firebase:
+          config: ".firebase/dev/GoogleService-Info.plist"
+        buildSettings:
+        # Development Team is visible in the apple developer portal 
+        # DEVELOPMENT_TEAM: YOURDEVTEAMID 
+        # PROVISIONING_PROFILE_SPECIFIER: "Dev-ProvisioningProfile"
+        
