@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/routes/go_routes.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -8,8 +9,10 @@ class AppWidget extends StatelessWidget {
     return MaterialApp.router(
       title: 'Application Name',
       theme: ThemeData(primarySwatch: Colors.blue),
-      routeInformationParser: Modular.routeInformationParser,
-      routerDelegate: Modular.routerDelegate,
+      routerDelegate: goRouter.routerDelegate,
+      routeInformationParser: goRouter.routeInformationParser,
+      routeInformationProvider: goRouter.routeInformationProvider,
     );
   }
 }
+

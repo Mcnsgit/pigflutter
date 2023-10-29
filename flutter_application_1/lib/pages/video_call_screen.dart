@@ -1,36 +1,145 @@
+// import 'dart:async';
 import 'package:flutter/material.dart';
-// import 'package:agora_uikit/agora_uikit.dart';
-// import '/src/presentation/widgets/custom_app_bar.dart';
+// import 'package:flutter_application_1/widgets/custom_app_bar.dart';
+// import 'package:permission_handler/permission_handler.dart';
 
-class VideoCallScreen extends StatefulWidget {
-  const VideoCallScreen({super.key});
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 
-  @override
-  State<VideoCallScreen> createState() => _VideoCallScreeState();
-}
+ String channelName = "<--Insert channel name here-->";
+    String token = "<--Insert authentication token here-->";
+    
+    int uid = 0; // uid of the local user
 
-class _VideoCallScreeState extends State<VideoCallScreen> {
-//   final appBarNotifier = CustomAppBarNotifier();
-//   final AgoraClient client = AgoraClient(
-//     agoraConnectionData: AgoraConnectionData(
-//       appId: ' fafa0504cabc493589c9681dca2dbab9 ',
-//       channelName: 'flutter text',
-//       tempToken:
-//           '007eJxTYAjZcYpn5rXLvoWX/HWE37gFJgYvjvsToG4zr6sg43K+7lsFhrTEtEQDUwOT5MSkZBNLY1MLy2RLMwvDlOREo5SkxCTLuI9fUxoCGRmSCheyMDJAIIjPwlCSWlzCwAAAfoUgzw==',
-//     ),
-//   );
+    int? _remoteUid; // uid of the remote user
+    bool _isJoined = false; // Indicates if the local user has joined the channel
+    late RtcEngine agoraEngine; // Agora engine instance
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-    appBar: AppBar(title: const Text('Video Call')),
-      body: SafeArea(
-          child: Column(children: [
-        Expanded(
-            child: Stack(children: [
-          Container(),
-        ]))
-      ])),
+    final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey
+    = GlobalKey<ScaffoldMessengerState>(); // Global key to access the scaffold
+
+    showMessage(String message) {
+        scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
+        content: Text(message),
+        ));
+    }
+    
+    @override
+    Widget build(BuildContext context) {
+        return MaterialApp(
+            scaffoldMessengerKey: scaffoldMessengerKey,
+            home: Scaffold(
+                appBar: AppBar(
+                    title: const Text('Get started with Video Calling'),
+                ),
+                body: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    children: [
+                        // Container for the local video
+                        Container(
+                            height: 240,
+                            decoration: BoxDecoration(border: Border.all()),
+                            child: Center(child: _localPreview())),
+                        const SizedBox(height: 10),
+                        //Container for the Remote video
+                        Container(
+                            height: 240,
+                            decoration: BoxDecoration(border: Border.all()),
+                            child: Center(child: _remoteVideo())),
+                        // Button Row
+                        Row(
+                            children: <Widget>[
+                                Expanded(
+                                    child: ElevatedButton(
+                                        onPressed: _isJoined ? null : () => {join(
+                                            channelName,
+                                            token,
+                                        )},
+                                        child: const Text("Join"),
+                                    ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                    child: ElevatedButton(
+                                        onPressed: _isJoined ? () => {leave(
+                                            channelName,
+                                            token,
+                                        )} : null,
+                                        child: const Text("Leave"),
+                                    ),
+                                ),
+                            ],
+                        ),
+                        const SizedBox(height: 10),
+                        // Button Row ends
+
+                    ],
+                ),
+            ),
+        );
+    }
+  
+ 
+
+// Display local video preview  
+  Widget _localPreview() {
+    if (_isJoined) {
+      return AgoraVideoView(
+        controller: VideoViewController(
+          rtcEngine: agoraEngine,
+          canvas: const VideoCanvas(uid: 0),
+        ),
+      );
+    } else {
+      return const Text(
+        'Join a channel',
+        textAlign: TextAlign.center,
+      );
+    }
+  }
+
+// Display remote user's video
+  Widget _remoteVideo() {
+    if (_remoteUid != null) {
+      return AgoraVideoView(
+        controller: VideoViewController.remote(
+          rtcEngine: agoraEngine,
+          canvas: VideoCanvas(uid: _remoteUid),
+          connection: RtcConnection(channelId: channelName),
+        ),
+      );
+    } else {
+      String msg = '';
+      if (_isJoined) msg = 'Waiting for a remote user to join';
+      return Text(
+        msg,
+        textAlign: TextAlign.center,
+      );
+    }
+  }
+
+  join(
+    String channelName,
+    String token
+  ) {
+    agoraEngine.joinChannel(
+      token: token,
+      channelId: channelName,
+      uid: uid,
+      options: const ChannelMediaOptions(
+        autoSubscribeAudio: true,
+        autoSubscribeVideo: true,
+      ),
     );
   }
-}
+ 
+  leave(
+    String channelName,
+    String token
+  ) {
+    agoraEngine.leaveChannel();
+    _remoteUid = null;
+    _isJoined = false;
+  } 
+
+
+// Build UI

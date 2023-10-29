@@ -1,32 +1,47 @@
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter_application_1/routes/go_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/log_in_page.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_application_1/widgets/custom_app_bar.dart';
-import 'package:flutter_application_1/widgets/bottom_nav_bar.dart';
-import 'routes/go_routes.dart';
 
+
+const String appId = "fafa0504cabc493589c9681dca2dbab9";
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(providers: [], child: MainApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MainApp extends StatelessWidget {
+  const MainApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => CustomAppBarNotifier()),
-        ChangeNotifierProvider(create: (context) => BottomNavBarNotifier()),
-      ],
-      child: MaterialApp.router(
-        routerDelegate: goRouter.routerDelegate,
-        routeInformationParser:goRouter.routeInformationParser,
-        routeInformationProvider: goRouter.routeInformationProvider,
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark().copyWith(),
+    return MaterialApp(
+      home: const LoginScreen(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        // useMaterial3: true,  // Consider commenting out if causing issues
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        // useMaterial3: true,  // Consider commenting out if causing issues
       ),
     );
   }
 }
+
+final AgoraClient client = AgoraClient(
+  agoraConnectionData: AgoraConnectionData(
+    appId: "fafa0504cabc493589c9681dca2dbab9",
+    channelName: "test",
+    tempToken:
+        "YOUR_COMPLETE_TOKEN_HERE",  // Replace with your complete token
+  ),
+  enabledPermission: [
+    Permission.camera,
+    Permission.microphone,
+  ],
+);
