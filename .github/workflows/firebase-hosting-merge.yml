@@ -22,7 +22,7 @@ jobs:
               npm install
           fi
 
-      - run: npm ci && npm run build
+      - run: npm ci && npm run shell
 
 
       # Deploy to Firebase Hosting
