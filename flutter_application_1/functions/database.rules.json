@@ -1,6 +1,95 @@
 {
   "rules": {
-    ".read": "now < 1696633200000",  // 2023-10-7
-    ".write": "now < 1696633200000",  // 2023-10-7
+    "users": {
+      "$user_id": {
+        ".read": "auth != null && auth.uid == $user_id",
+        ".write": "auth != null && auth.uid == $user_id",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "email": {
+          ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$/i)"
+        },
+        "password": {
+          ".validate": "newData.isString() && newData.val().length > 6"
+        },
+      }
+    },
+    "matches": {
+      "$match_id": {
+        ".read": "auth != null && (root.child('matches').child($match_id).child('User1_Id').val() == auth.uid || root.child('matches').child($match_id).child('User2_Id').val() == auth.uid)",
+        ".write": "auth != null && (root.child('matches').child($match_id).child('User1_Id').val() == auth.uid || root.child('matches').child($match_id).child('User2_Id').val() == auth.uid)",
+        "Timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+      }
+    },
+    "messages": {
+      "$message_id": {
+        ".read": "auth != null && (root.child('messages').child($message_id).child('Sender_Id').val() == auth.uid || root.child('messages').child($message_id).child('Receiver_Id').val() == auth.uid)",
+        ".write": "auth != null && (root.child('messages').child($message_id).child('Sender_Id').val() == auth.uid || root.child('messages').child($message_id).child('Receiver_Id').val() == auth.uid)",
+        "Message": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "Timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+      }
+    },
+    "photos": {
+      "$photo_id": {
+        ".read": "auth != null && root.child('photos').child($photo_id).child('User_Id').val() == auth.uid",
+        ".write": "auth != null && root.child('photos').child($photo_id).child('User_Id').val() == auth.uid",
+        "PhotoUrl": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "IsDefault": {
+          ".validate": "newData.isBoolean()"
+        },
+      }
+    },
+    "likes": {
+      "$like_id": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        "Timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+      }
+    },
+    "dislikes": {
+      "$dislike_id": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        "Timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+      }
+    },
+    "interests": {
+      "$interest_id": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        "Interest": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        
+      }
+    },
+    "user_interests": {
+      "$user_interest_id": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+      }
+    },
+    "connections": {
+      "$connection_id": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        "ConnectionType": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+      }
+    }
   }
 }
