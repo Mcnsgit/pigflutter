@@ -9,6 +9,10 @@ import 'pages/video_call_screen.dart';
 
 
 String appId = dotenv.get('APP_ID');
+String tempToken = dotenv.get('TEMP_TOKEN');
+String userName = "USER_NAME";
+String certificate = dotenv.get('CERTIFICATE');
+
 
 void main() {
   runApp(

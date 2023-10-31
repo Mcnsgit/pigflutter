@@ -1,0 +1,10 @@
+tap "homebrew/bundle"
+tap "mongodb/brew"
+brew "coreutils"
+brew "git"
+brew "md5sha1sum", link: false
+brew "spoof-mac"
+brew "wget"
+brew "wimlib"
+cask "smplayer"
+cask "vscodium"
