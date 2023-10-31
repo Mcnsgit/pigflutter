@@ -8,12 +8,12 @@ name: Deploy to Firebase Hosting on merge
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: flutter_application_1/functions
     steps:
       - uses: actions/checkout@v3
       
-      # Navigate to the functions/firebase_options directory
-      - name: Change directory to functions/
-        run: cd flutter_application_1/functions
 
       - name: Ensure package-lock.json exists
         run: |
