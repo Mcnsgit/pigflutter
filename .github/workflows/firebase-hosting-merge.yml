@@ -13,7 +13,7 @@ jobs:
       
       # Navigate to the functions/firebase_options directory
       - name: Change directory to functions/
-        run: cd functions/
+        run: cd flutter_application_1/functions
 
       # Install dependencies using npm ci
       - name: Install Dependencies
