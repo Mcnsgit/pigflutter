@@ -3,17 +3,52 @@ import 'home_screen.dart';
 
 
 class LoginScreen extends StatefulWidget {
+  
+  
   const LoginScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
+class LoginCallback extends StatelessWidget {
+  final VoidCallback onLogin;
 
+  const LoginCallback({Key? key, required this.onLogin}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return LoginCallback(onLogin: onLogin);
+
+  }
+
+      void onLoginC() {
+    onLogin();
+  } 
+
+}
 class _LoginScreenState extends State<LoginScreen> {
+  
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final Set<FormFieldState<dynamic>> passwordFields = <FormFieldState<dynamic>>{};
+  final obscuringCharacter = '•';
+  final obscureText = false;
+  
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +168,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final Set<FormFieldState<dynamic>> passwordFields = <FormFieldState<dynamic>>{};
+  final obscuringCharacter = '•';
+  final obscureText = false;
 
   @override
   Widget build(BuildContext context) {
@@ -168,6 +206,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
+                obscuringCharacter: '•',
                 decoration: const InputDecoration(
                   labelText: 'Password',
                 ),
@@ -183,11 +222,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Perform registration operation here using _emailController.text and _passwordController.text
+                onPressed: () {                    // Perform registration operation here using _emailController.text and _passwordController.text
                     // ignore: unused_local_variable
                     String email = _emailController.text;
+
                     // ignore: unused_local_variable
                     String password = _passwordController.text;
                     // Implement your registration logic here.
@@ -195,7 +233,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     // After successful registration, you can navigate to the login screen.
                     Navigator.pop(context);
                   }
-                },
+                ,
                 child: const Text('Register'),
               ),
               const SizedBox(height: 16),
