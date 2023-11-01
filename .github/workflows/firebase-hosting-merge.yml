@@ -32,3 +32,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GAYMEATUP }}'
           channelId: live
           projectId: gaymeatup
+          working-directory: flutter_application_1/functions
