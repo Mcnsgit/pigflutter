@@ -1,36 +1,27 @@
-name: Deploy to Firebase Hosting on merge
+name: Deploy to Firebase Hosting
 
-'on':
+on:
   push:
     branches:
-      - main
+      - main 
 
 jobs:
-  build_and_deploy:
+  deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: flutter_application_1/functions
+
     steps:
-      - uses: actions/checkout@v3
-      
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Ensure package-lock.json exists
-        run: |
-          if [ ! -f package-lock.json ]; 
-          then
-              npm install
-          fi
+    - name: Install Firebase CLI
+      run: npm install -g firebase-tools
 
-      - run: npm ci 
+    - name: Authenticate with Firebase
+      run: firebase login:ci --token ${{ 1//09-TQJyBws417CgYIARAAGAkSNwF-L9IrQGFiDV5STZCQvSyhYrE6jiD9-GAHYlUGIwXWYhdG0y59IngfcbUudie6G8uiDSHKUOs }}
+    
+    - name: Change to functions directory
+      run: cd flutter_application_1/functions
 
 
-      # Deploy to Firebase Hosting
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GAYMEATUP }}'
-          channelId: live
-          entryPoint: flutter_application_1/functions
-          expires: 7d
-          firebaseToolsVersion: latest
+    - name: Deploy to Firebase Hosting
+      run: firebase deploy --only hosting
